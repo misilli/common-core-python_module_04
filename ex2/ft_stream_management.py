@@ -1,9 +1,4 @@
 import sys
-import typing
-
-
-def print_error(message: str) -> None:
-    print(f"[STDERR] {message}", file=sys.stderr)
 
 
 def read_archive(filename: str) -> str | None:
@@ -11,18 +6,20 @@ def read_archive(filename: str) -> str | None:
     print(f"Accessing file '{filename}'")
 
     try:
-        file: typing.IO[str] = open(filename, "r")
-    except OSError as error:
-        print_error(f"Error opening file '{filename}': {error}")
+        file = open(filename, "r")
+    except OSError as e:
+        print(
+            f"[STDERR] Error opening file '{filename}': {e}", file=sys.stderr)
         return None
 
     try:
-        content: str = file.read()
+        content = file.read()
         print("---")
         print(content, end="" if content.endswith("\n") else "\n")
         print("---")
-    except OSError as error:
-        print_error(f"Error reading file '{filename}': {error}")
+    except OSError as e:
+        print(
+            f"[STDERR] Error reading file '{filename}': {e}", file=sys.stderr)
         return None
     finally:
         file.close()
@@ -31,35 +28,25 @@ def read_archive(filename: str) -> str | None:
     return content
 
 
-def add_archive_character(content: str) -> str:
-    return "".join(line + "#\n" for line in content.splitlines())
-
-
-def save_archive(filename: str, content: str) -> bool:
-    print(f"Saving data to '{filename}'")
+def write_archive(filename: str, content: str) -> None:
+    try:
+        fileopen = open(filename, "w")
+    except OSError as error:
+        print(f"Error opening file '{filename}': {error}")
+        print("Data not saved.")
+        return
 
     try:
-        file: typing.IO[str] = open(filename, "w")
-    except OSError as error:
-        print_error(f"Error opening file '{filename}': {error}")
-        return False
-
-    try:
-        file.write(content)
-    except OSError as error:
-        print_error(f"Error writing file '{filename}': {error}")
-        return False
+        fileopen.write(content)
+    except OSError as e:
+        print(
+            f"[STDERR] Error writing file '{filename}': {e}", file=sys.stderr)
+        print("Data not saved.")
+        return
     finally:
-        file.close()
+        fileopen.close()
 
     print(f"Data saved in file '{filename}'.")
-    return True
-
-
-def ask_filename() -> str:
-    sys.stdout.write("Enter new file name (or empty): ")
-    sys.stdout.flush()
-    return sys.stdin.readline().rstrip("\n")
 
 
 def ft_stream_management() -> None:
@@ -71,19 +58,21 @@ def ft_stream_management() -> None:
     if content is None:
         return
 
-    transformed: str = add_archive_character(content)
+    transformed = "".join(line + "#\n" for line in content.splitlines())
     print("Transform data:")
     print("---")
     print(transformed, end="")
     print("---")
 
-    new_filename: str = ask_filename()
+    sys.stdout.write("Enter new file name (or empty): ")
+    sys.stdout.flush()
+
+    new_filename = sys.stdin.readline().rstrip("\n")
     if new_filename == "":
         print("Not saving data.")
         return
-
-    if not save_archive(new_filename, transformed):
-        print("Data not saved.")
+    print(f"Saving data to '{new_filename}'")
+    write_archive(new_filename, transformed)
 
 
 if __name__ == "__main__":
