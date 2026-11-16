@@ -31,8 +31,9 @@ def read_archive(filename: str) -> str | None:
 def write_archive(filename: str, content: str) -> None:
     try:
         fileopen = open(filename, "w")
-    except OSError as error:
-        print(f"Error opening file '{filename}': {error}")
+    except OSError as e:
+        print(
+            f"[STDERR] Error opening file '{filename}': {e}", file=sys.stderr)
         print("Data not saved.")
         return
 
