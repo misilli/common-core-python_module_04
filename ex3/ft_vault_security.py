@@ -19,7 +19,7 @@ def main() -> None:
     print(secure_archive("/not/existing/file", "read", ""))
     print()
     print("Using 'secure_archive' to read from an inaccessible file:")
-    print(secure_archive("/etc/master.passwd", "read", ""))
+    print(secure_archive("/etc/sudoers", "read", ""))
     print()
     print("Using 'secure_archive' to read from a regular file:")
     result = secure_archive("ancient_fragment.txt", "read", "")
