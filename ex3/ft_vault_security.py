@@ -9,6 +9,7 @@ def secure_archive(name: str, action: str, content: str) -> tuple[bool, str]:
                 return True, file.read()
     except OSError as error:
         return False, str(error)
+    return False, ""
 
 
 def main() -> None:
