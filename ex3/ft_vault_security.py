@@ -29,7 +29,7 @@ def main() -> None:
     print(result)
     print()
     print("Using 'secure_archive' to write previous content to a new file:")
-    print(secure_archive("new_fragment.txt", "write", str(result[1])))
+    print(secure_archive("new_fragment.txt", "write", result[1]))
 
 
 if __name__ == "__main__":

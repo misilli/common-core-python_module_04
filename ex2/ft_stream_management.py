@@ -15,18 +15,17 @@ def read_archive(filename: str) -> str | None:
     try:
         content = file.read()
         print("---")
-        print(content, end="" if content.endswith("\n") else "\n")
+        print(content)
         print("---")
-    except OSError as e:
+    except (OSError, ValueError) as e:
         print(
             f"[STDERR] Error reading file '{filename}': {e}", file=sys.stderr)
         return None
     finally:
         file.close()
+        print(f"File '{filename}' closed.")
 
-    print(f"File '{filename}' closed.")
     return content
-
 
 def write_archive(filename: str, content: str) -> None:
     try:
@@ -62,7 +61,7 @@ def ft_stream_management() -> None:
     transformed = "".join(line + "#\n" for line in content.splitlines())
     print("Transform data:")
     print("---")
-    print(transformed, end="")
+    print(transformed)
     print("---")
 
     sys.stdout.write("Enter new file name (or empty): ")
