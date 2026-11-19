@@ -13,7 +13,7 @@ def read_archive(filename: str) -> str | None:
         print("---")
         print(content)
         print("---")
-    except OSError as error:
+    except (OSError, ValueError) as error:
         print(f"Error reading file '{filename}': {error}")
         return None
     finally:
@@ -33,7 +33,7 @@ def write_archive(filename: str, content: str) -> None:
 
     try:
         fileopen.write(content)
-    except OSError as error:
+    except (OSError, ValueError) as error:
         print(f"Error writing file '{filename}': {error}")
         print("Data not saved.")
         return
@@ -60,7 +60,11 @@ def ft_archive_creation() -> None:
     print(transformed)
     print("---")
 
-    new_filename = input("Enter new file name (or empty): ")
+    try:
+        new_filename = input("Enter new file name (or empty): ")
+    except EOFError:
+        new_filename = ""
+
     if new_filename == "":
         print("Not saving data.")
         return

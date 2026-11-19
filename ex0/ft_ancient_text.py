@@ -2,12 +2,12 @@ import sys
 
 
 def ft_ancient_text() -> None:
-    print("=== Cyber Archives Recovery ===")
     if len(sys.argv) != 2:
         print("Usage: ft_ancient_text.py <file>")
         return
 
     filename = sys.argv[1]
+    print("=== Cyber Archives Recovery ===")
     try:
         print(f"Accessing file '{filename}'")
         fileopen = open(filename, "r")
@@ -20,8 +20,7 @@ def ft_ancient_text() -> None:
         print("---")
         print(content)
         print("---")
-
-    except OSError as error:
+    except (OSError, ValueError) as error:
         print(f"Error reading file '{filename}': {error}")
         return
     finally:
