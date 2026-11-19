@@ -27,6 +27,7 @@ def read_archive(filename: str) -> str | None:
 
     return content
 
+
 def write_archive(filename: str, content: str) -> None:
     try:
         fileopen = open(filename, "w")
